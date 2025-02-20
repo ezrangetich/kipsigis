@@ -11,33 +11,40 @@
             font-family: 'Merriweather', serif;
             line-height: 1.8;
             background-color: darkcyan;
-            color: gold;
+            color: navajowhite;
+        }
+        p {
+            color: cornsilk;
+            font-size: large;
         }
         .container {
             margin-top: 40px;
         }
         .map-container {
-            height: 300px;
+            height: 450px;
             margin-top: 20px;
-        }
-        .timeline {
-            position: relative;
-            max-width: 800px;
-            margin: auto;
-        }
-        .timeline::after {
-            content: '';
-            position: absolute;
-            width: 0px;
-            background-color: #ff4757;
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            margin-left: -3px;
         }
         .like-comment {
             text-align: center;
             margin-top: 30px;
+        }
+        .comment-section {
+            background: beige;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .comment {
+            border-bottom: darkseagreen;
+            padding: 10px 0;
+            color: blue;
+        }
+        .comment:last-child {
+            border-bottom: none;
+        }
+        .comment strong {
+            color: #ff4757;
         }
     </style>
     <script>
@@ -57,19 +64,38 @@
             let name = document.getElementById("commenter-name").value;
             let comment = document.getElementById("comment-text").value;
             if (name && comment) {
-                let commentList = document.getElementById("comment-list");
-                let newComment = document.createElement("p");
-                newComment.innerHTML = `<strong>${name}:</strong> ${comment}`;
-                commentList.appendChild(newComment);
+                let comments = JSON.parse(localStorage.getItem("comments")) || [];
+                comments.push({ name, comment });
+                localStorage.setItem("comments", JSON.stringify(comments));
+                displayComments();
                 document.getElementById("commenter-name").value = "";
                 document.getElementById("comment-text").value = "";
             } else {
                 alert("Please enter your name and a comment.");
             }
         }
+        
+        function displayComments() {
+            let commentList = document.getElementById("comment-list");
+            commentList.innerHTML = "";
+            let comments = JSON.parse(localStorage.getItem("comments")) || [];
+            comments.forEach(comment => {
+                let newComment = document.createElement("div");
+                newComment.classList.add("comment");
+                newComment.innerHTML = `<strong>${comment.name}:</strong> ${comment.comment}`;
+                commentList.appendChild(newComment);
+            });
+        }
+        
+        window.onload = function() {
+            document.getElementById("like-count").innerText = localStorage.getItem("likeCount") || 0;
+            displayComments();
+        }
     </script>
 </head>
 <body>
+
+
     <header class="bg-dark text-white text-center p-4">
         <h1>The Battle of Mogori – Circa 1889</h1>
         <p>Compiled By <strong>kiprono arap korgoren</strong></p>
@@ -77,33 +103,34 @@
 
     <div class="container">
         <section class="article">
-            <h2>Overview</h2>
+            <h2 style="color: lawngreen;">Overview</h2>
             <p>The Battle of Mogori was a devastating military encounter between the Kipsigis on one hand and the Kisii and Luo on the other...</p>
         </section>
 
         <section class="timeline">
-            <h2 class="text-center">Timeline of the Battle</h2>
+            <h2 class="text-center" style="color: antiquewhite;">Timeline of the Battle</h2>
             <div class="timeline-event left">
-                <h4>Early 1889 - Prophecy Ignored</h4>
+                <h4 style="color: lawngreen;">Early 1889 - Prophecy Ignored</h4>
                 <p>The Kipsigis warriors, despite warnings from the Orkoiyot, prepared to raid Gusii land, assembling at Bureti.</p>
             </div>
             <div class="timeline-event right">
-                <h4>Mid-1889 - Raid on Gusii</h4>
+                <h4 style="color: lawngreen;">Mid-1889 - Raid on Gusii</h4>
                 <p>The warriors attacked Mugirango and Kitutu, destroying villages, but ignored the bad omens.</p>
             </div>
             <div class="timeline-event left">
-                <h4>Late 1889 - Gusii Trap Set</h4>
+                <h4 style="color: lawngreen;">Late 1889 - Gusii Trap Set</h4>
                 <p>After the Kipsigis warriors crossed into Luo land, the Gusii prepared an ambush along Manga Escarpment.</p>
             </div>
             <div class="timeline-event right">
-                <h4>Late 1889 - Battle Begins</h4>
+                <h4 style="color: lawngreen;">Late 1889 - Battle Begins</h4>
                 <p>The Kipsigis, retreating from the Luo, were ambushed by the Gusii at Getwanyi in Kitutu, leading to a devastating loss. The warriors, unprepared for the trap, found themselves surrounded, with no easy escape. The battle was fierce, lasting for hours, as the Kipsigis fought to break through the encirclement. The numerical and strategic advantage of the Gusii and Luo proved overwhelming.</p>
             </div>
             <div class="timeline-event left">
-                <h4>1890 - Aftermath & Consequences</h4>
+                <h4 style="color: lawngreen;">1890 - Aftermath & Consequences</h4>
                 <p>The Kipsigis suffered great losses, leading to premature initiation of boys into warriors and early marriages. The defeat also changed their military strategies in future conflicts, making them more cautious in raids.</p>
             </div>
         </section>
+    <div class="container">
 
         <section class="map-container">
             <div id="map" style="height: 100%;"></div>
@@ -113,13 +140,17 @@
             <h2>Audio & Images</h2>
             <audio controls>
                 <source src="LUGET_AB_MOGORI_PART_1-_KIPCHAMBA_ARAP_TAPOTUK(128k).mp3" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>    <audio controls>
                 <source src="LUGET_AB_MOGORI_PART_2._-_KIPCHAMBA_ARAP_TAPOTUK(128k).mp3" type="audio/mpeg">
+
                 Your browser does not support the audio element.
             </audio>
             <br>
-            <img src="1739992378817.jpg" alt="Battle of Mogori" class="img-fluid mt-3"><br><br>
+            <audio controls>
+                <source src="LUGET_AB_MOGORI_PART_2._-_KIPCHAMBA_ARAP_TAPOTUK(128k).mp3" type="audio/mpeg">
+
+                Your browser does not support the audio element.
+            </audio>
+            <img src="1739992378817.jpg" alt="Battle of Mogori" class="img-fluid mt-3">
             <img src="1739992387553.jpg" alt="Battle of Mogori" class="img-fluid mt-3">
 
         </section>
@@ -131,12 +162,12 @@
             <input type="text" id="commenter-name" placeholder="Your Name" class="form-control">
             <textarea id="comment-text" placeholder="Write a comment..." class="form-control mt-2"></textarea>
             <button class="btn btn-primary mt-2" onclick="postComment()">Post Comment</button>
-            <div id="comment-list" class="mt-3"></div>
+            <div id="comment-list" class="comment-section mt-3"></div>
         </section>
     </div>
 
     <footer>
-        <p>&copy; 2025 The Battle of Mogori | Compiled by Kiprono arap korgoren</p>
+        <p style="color: cornsilk;">&copy; 2025 The Battle of Mogori | Compiled by Kiprono arap korgoren</p>
         <p>For more historical insights, visit our <a href="#" style="color: #ff4757;">history archive</a>.</p>
     </footer>
 
