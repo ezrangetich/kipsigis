@@ -162,11 +162,13 @@ document.addEventListener("DOMContentLoaded", function () {
         <section class="like-comment">
             <button id="like-btn" class="btn btn-danger" onclick="likePost()">Like</button>
             <p>Likes: <span id="like-count">0</span></p>
-            <h3>Comment your views to Korgoren</h3>
-            <input type="text" id="commenter-name" placeholder="Your Name" class="form-control">
-            <textarea id="comment-text" placeholder="Write a comment..." class="form-control mt-2"></textarea>
-            <button class="btn btn-primary mt-2" onclick="postComment()">Post Comment</button>
-            <div id="comment-list" class="comment-section mt-3"></div>
+           
+               <!-- Google Form for Comments -->
+        <section class="comment-section">
+            <h3>Leave Your Comment</h3>
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfIXRMPpg11jnZQ0bSdczjWPNj6fqozNmJ5_4NxBzzZttz9bA/viewform?usp=header" width="100%" height="500px" frameborder="0"></iframe>
+        </section>
+    </div>
         </section>
     </div>
 
