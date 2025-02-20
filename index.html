@@ -48,21 +48,30 @@
         }
     </style>
     <script>
-        let liked = false;
+
+document.addEventListener("DOMContentLoaded", function () {
+            displayComments();
+            let storedLikes = localStorage.getItem("likeCount") || 0;
+            document.getElementById("like-count").innerText = storedLikes;
+            if (localStorage.getItem("liked")) {
+                document.getElementById("like-btn").disabled = true;
+            }
+        });
+
         function likePost() {
-            if (!liked) {
+            if (!localStorage.getItem("liked")) {
                 let likeCount = parseInt(localStorage.getItem("likeCount")) || 0;
                 likeCount++;
                 localStorage.setItem("likeCount", likeCount);
+                localStorage.setItem("liked", "true");
                 document.getElementById("like-count").innerText = likeCount;
                 document.getElementById("like-btn").disabled = true;
-                liked = true;
             }
         }
-        
+
         function postComment() {
-            let name = document.getElementById("commenter-name").value;
-            let comment = document.getElementById("comment-text").value;
+            let name = document.getElementById("commenter-name").value.trim();
+            let comment = document.getElementById("comment-text").value.trim();
             if (name && comment) {
                 let comments = JSON.parse(localStorage.getItem("comments")) || [];
                 comments.push({ name, comment });
@@ -74,7 +83,7 @@
                 alert("Please enter your name and a comment.");
             }
         }
-        
+
         function displayComments() {
             let commentList = document.getElementById("comment-list");
             commentList.innerHTML = "";
@@ -85,11 +94,6 @@
                 newComment.innerHTML = `<strong>${comment.name}:</strong> ${comment.comment}`;
                 commentList.appendChild(newComment);
             });
-        }
-        
-        window.onload = function() {
-            document.getElementById("like-count").innerText = localStorage.getItem("likeCount") || 0;
-            displayComments();
         }
     </script>
 </head>
