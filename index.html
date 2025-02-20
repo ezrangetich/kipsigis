@@ -21,7 +21,7 @@
             margin-top: 40px;
         }
         .map-container {
-            height: 450px;
+            height: 250px;
             margin-top: 20px;
         }
         .like-comment {
@@ -49,52 +49,6 @@
     </style>
     <script>
 
-document.addEventListener("DOMContentLoaded", function () {
-            displayComments();
-            let storedLikes = localStorage.getItem("likeCount") || 0;
-            document.getElementById("like-count").innerText = storedLikes;
-            if (localStorage.getItem("liked")) {
-                document.getElementById("like-btn").disabled = true;
-            }
-        });
-
-        function likePost() {
-            if (!localStorage.getItem("liked")) {
-                let likeCount = parseInt(localStorage.getItem("likeCount")) || 0;
-                likeCount++;
-                localStorage.setItem("likeCount", likeCount);
-                localStorage.setItem("liked", "true");
-                document.getElementById("like-count").innerText = likeCount;
-                document.getElementById("like-btn").disabled = true;
-            }
-        }
-
-        function postComment() {
-            let name = document.getElementById("commenter-name").value.trim();
-            let comment = document.getElementById("comment-text").value.trim();
-            if (name && comment) {
-                let comments = JSON.parse(localStorage.getItem("comments")) || [];
-                comments.push({ name, comment });
-                localStorage.setItem("comments", JSON.stringify(comments));
-                displayComments();
-                document.getElementById("commenter-name").value = "";
-                document.getElementById("comment-text").value = "";
-            } else {
-                alert("Please enter your name and a comment.");
-            }
-        }
-
-        function displayComments() {
-            let commentList = document.getElementById("comment-list");
-            commentList.innerHTML = "";
-            let comments = JSON.parse(localStorage.getItem("comments")) || [];
-            comments.forEach(comment => {
-                let newComment = document.createElement("div");
-                newComment.classList.add("comment");
-                newComment.innerHTML = `<strong>${comment.name}:</strong> ${comment.comment}`;
-                commentList.appendChild(newComment);
-            });
-        }
     </script>
 </head>
 <body>
@@ -158,14 +112,37 @@ document.addEventListener("DOMContentLoaded", function () {
             <img src="1739992387553.jpg" alt="Battle of Mogori" class="img-fluid mt-3">
 
         </section>
-
-        <section class="like-comment">
-            <button id="like-btn" class="btn btn-danger" onclick="likePost()">Like</button>
-            <p>Likes: <span id="like-count">0</span></p>
+      
+      
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                let storedLikes = localStorage.getItem("likeCount") || 0;
+                document.getElementById("like-count").innerText = storedLikes;
+                
+                if (localStorage.getItem("liked") === "true") {
+                    document.getElementById("like-btn").disabled = true;
+                }
+            });
+        
+            function likePost() {
+                if (localStorage.getItem("liked") !== "true") {
+                    let likeCount = parseInt(localStorage.getItem("likeCount")) || 0;
+                    likeCount++;
+                    localStorage.setItem("likeCount", likeCount);
+                    localStorage.setItem("liked", "true");
+        
+                    document.getElementById("like-count").innerText = likeCount;
+                    document.getElementById("like-btn").disabled = true;
+                }
+            }
+        </script>
+          <button id="like-btn" class="btn btn-danger" onclick="likePost()">Like</button>
+          <p>Likes: <span id="like-count">0</span></p>
+          
            
                <!-- Google Form for Comments -->
         <section class="comment-section">
-            <h3>Leave Your Comment</h3>
+            <h3 style="color: blue;">Leave Your Comment to korgoren</h3>
             <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfIXRMPpg11jnZQ0bSdczjWPNj6fqozNmJ5_4NxBzzZttz9bA/viewform?usp=header" width="100%" height="500px" frameborder="0"></iframe>
         </section>
     </div>
